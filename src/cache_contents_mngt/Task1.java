@@ -26,11 +26,10 @@ public class Task1 {
 		
 		stdin.close();
 		
-		print("LRU Hit rate:", LRUCache.getHitRate());
-		print("LFU Hit rate:", LFUCache.getHitRate());
-	}
-	
-	public static void print(String text, double pc) {
-		System.out.printf("%s %.1f%c\n", text, pc, '%');
+		Lib.print("LRU Hit rate:", LRUCache.getHitRate());
+		Lib.print("LFU Hit rate:", LFUCache.getHitRate());
+		
+		Lib.dumpCacheContentToFile(LRUCache.getCacheContent(), "cache_lru.txt");
+		Lib.dumpCacheContentToFile(LFUCache.getCacheContent(), "cache_lfu.txt");
 	}
 }

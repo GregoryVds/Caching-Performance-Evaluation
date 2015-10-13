@@ -19,8 +19,8 @@ public class Task2 {
 		
 		String request;
 		while((request = stdin.readLine()) != null) {
-			String url  = request.split(" ")[0];
-			int size = Integer.parseInt(request.split(" ")[1]);
+			String url	= request.split(" ")[0];
+			int size 	= Integer.parseInt(request.split(" ")[1]);
 			LRUCache.get(url, size);
 			LFUCache.get(url, size);
 			RLFCache.get(url, size);
@@ -28,17 +28,15 @@ public class Task2 {
 		
 		stdin.close();
 		
-		print("LRU Hit rate:", LRUCache.getHitRate());
-		print("LRU Byte hit rate:", LRUCache.getByteHitRate());
+		Lib.print("LRU Hit rate:", LRUCache.getHitRate());
+		Lib.print("LRU Byte hit rate:", LRUCache.getByteHitRate());
+		Lib.print("LFU Hit rate:", LFUCache.getHitRate());
+		Lib.print("LFU Byte hit rate:", LFUCache.getByteHitRate());
+		Lib.print("Size-based Hit rate:", RLFCache.getHitRate());
+		Lib.print("Size-based Hit rate:", RLFCache.getByteHitRate());
 		
-		print("LFU Hit rate:", LFUCache.getHitRate());
-		print("LFU Byte hit rate:", LFUCache.getByteHitRate());
-		
-		print("Size-based Hit rate:", RLFCache.getHitRate());
-		print("Size-based Hit rate:", RLFCache.getByteHitRate());
-	}
-	
-	public static void print(String text, double pc) {
-		System.out.printf("%s %.1f%c\n", text, pc, '%');
+		Lib.dumpCacheContentToFile(LRUCache.getCacheContent(), "cache_lru.txt");
+		Lib.dumpCacheContentToFile(LFUCache.getCacheContent(), "cache_lfu.txt");
+		Lib.dumpCacheContentToFile(RLFCache.getCacheContent(), "cache_sized-based.txt");
 	}
 }
