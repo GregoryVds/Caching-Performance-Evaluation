@@ -6,9 +6,9 @@ import java.util.List;
 
 public class Cache {
 
-	protected int hitsCounts;
+	protected int hitsCount;
 	protected int hitsBytes;
-	protected int missesCounts;
+	protected int missesCount;
 	protected int missesBytes;
 	protected int capacity;
 	protected int warmup;
@@ -16,17 +16,13 @@ public class Cache {
 
 
 	Cache(int capacity, Boolean capacityInBytes, int warmup) {
-		hitsCounts =0;
-		hitsBytes=0;
-		missesCounts = 0;
-		missesBytes = 0 ;
+		hitsCount = 0;
+		hitsBytes = 0;
+		missesCount = 0;
+		missesBytes = 0;
 		this.capacity = capacity;
 		this.warmup = warmup;
 		this.capacityInBytes = capacityInBytes;
-	}
-
-	int getWarmup() {
-		return warmup;
 	}
 
 	public void get(String url, int size) {
@@ -34,13 +30,15 @@ public class Cache {
 	}
 
 	public double getHitRate() {
-		// return hitsCounts/(hitsCounts+missesCounts);
-		return 12.4d;
+		if (getsCount()==0)
+			return 1.0d;
+		return hitsCount/getsCount();
 	}
 
 	public double getByteHitRate() {
-		// return hitsBytes/(missesBytes+hitsBytes);
-		return 12.4d;
+		if (getsCount()==0)
+			return 1.0d;
+		return hitsBytes/(missesBytes+hitsBytes);
 	}
 
 	public List<String> getCacheContent() {
@@ -51,14 +49,17 @@ public class Cache {
 		));
 	}
 
-	public void newHit( int bytes){
-		hitsCounts++;
-		hitsBytes = hitsBytes+bytes;
+	public int getsCount() {
+		return hitsCount+missesCount;
+	}
+	
+	public void newHit(int bytes){
+		hitsCount++;
+		hitsBytes+=bytes;
 	}
 
-	public void newMiss( int bytes) {
-		missesCounts++;
-		missesBytes =+bytes;
+	public void newMiss(int bytes) {
+		missesCount++;
+		missesBytes+=bytes;
 	}
-
 }
