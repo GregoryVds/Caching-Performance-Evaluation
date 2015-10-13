@@ -15,39 +15,46 @@ public class LRU extends Cache {
 
 	public void get(String url, int size) {
 		Request rqst = new Request(url,size);
-		if (this.capacityInBytes)
-			getTache2(rqst);
-		else
-			getTache1(rqst);
+		if (isInCache(rqst)) {
+			newHit(rqst.size);
+			linkedlist.remove(rqst);
+			linkedlist.addFirst(rqst);
+		}
+		else { 
+			newMiss(rqst.size);
+			if (!fitsInCache(rqst))
+				freeSpace(rqst);
+			put(rqst);
+		}
 	}
 	
 	public Boolean isInCache(Request rqst) {
 		return linkedlist.contains(rqst);
 	}
 	
-	public void getTache1(Request rqst) {
-		if (isInCache(rqst)) {
-			newHit(rqst.getSize());
-			linkedlist.remove(rqst);
-			linkedlist.addFirst(rqst);
-		}
-		else { 
-			newMiss(rqst.getSize());
-			if (linkedlist.size() < this.capacity)
-				linkedlist.removeLast();
-			linkedlist.addFirst(rqst);
-		}
+	@Override
+	public void put(Request rqst) {
+		super.put(rqst);
+		linkedlist.addFirst(rqst);
 	}
 	
-	public void getTache2(Request rsqt) {
-		
+	public void freeSpace(Request rqst) {
+		if (capacityExpressedInBytes)
+			super.remove(linkedlist.removeLast());
+		else {
+			int spaceFreed = 0;
+			while (spaceFreed < rqst.size) {
+				spaceFreed+=linkedlist.getLast().size;
+				super.remove(linkedlist.removeLast());
+			}
+		}
 	}
 	
 	public List<String> getCacheContent() {
 		ArrayList<String> stringCache = new ArrayList<String>();
 		while(linkedlist.size() > 0){
 			Request temp = linkedlist.removeLast();
-			stringCache.add(temp.getUrl());
+			stringCache.add(temp.url);
 		}
 		return stringCache;	
 	}

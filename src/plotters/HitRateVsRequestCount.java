@@ -24,7 +24,7 @@ public class HitRateVsRequestCount {
 	
 	static XYDataset createDataset() throws NumberFormatException, IOException {	   
 		final XYSeries serie = new XYSeries("Hit Rate");
-		LRU LRUCache = new LRU(0, false, CACHE_SIZE);
+		LRU LRUCache = new LRU(CACHE_SIZE, false, 0);
 
 		BufferedReader stdin = new BufferedReader(new FileReader(FILE_PATH));
 		String request;

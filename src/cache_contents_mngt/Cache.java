@@ -8,7 +8,9 @@ public class Cache {
 	protected int missesBytes;
 	protected int capacity;
 	protected int warmup;
-	protected Boolean capacityInBytes;
+	protected int capacityFilledInBytes;
+	protected int elementsInCache;
+	protected Boolean capacityExpressedInBytes;
 
 
 	Cache(int capacity, Boolean capacityInBytes, int warmup) {
@@ -16,25 +18,15 @@ public class Cache {
 		hitsBytes 	= 0;
 		missesCount = 0;
 		missesBytes = 0;
+		capacityFilledInBytes = 0;
+		elementsInCache = 0;
 		this.capacity 		 = capacity;
 		this.warmup	 		 = warmup;
-		this.capacityInBytes = capacityInBytes;
+		this.capacityExpressedInBytes = capacityInBytes;
 	}
 
 	public void get(String url, int size) {
 		warmup--;
-	}
-
-	public double getHitRate() {
-		if (getsCount()==0)
-			return 0.0d;
-		return ((double)hitsCount)/getsCount();
-	}
-
-	public double getByteHitRate() {
-		if (getsCount()==0)
-			return 0.0d;
-		return ((double)hitsBytes)/(missesBytes+hitsBytes);
 	}
 
 	public int getsCount() {
@@ -49,5 +41,34 @@ public class Cache {
 	public void newMiss(int bytes) {
 		missesCount++;
 		missesBytes+=bytes;
+	}
+	
+	public void put(Request rqst) {
+		capacityFilledInBytes+=rqst.size;
+		elementsInCache++;
+	}
+	
+	public void remove(Request rqst) {
+		capacityFilledInBytes-=rqst.size;
+		elementsInCache--;
+	}
+	
+	public boolean fitsInCache(Request rqst) {
+		if (capacityExpressedInBytes)
+			return (capacity >= (capacityFilledInBytes + rqst.size)); 
+		else
+			return (elementsInCache < capacity);
+	}
+	
+	public double getHitRate() {
+		if (getsCount()==0)
+			return 0.0d;
+		return ((double)hitsCount)/getsCount();
+	}
+
+	public double getByteHitRate() {
+		if (getsCount()==0)
+			return 0.0d;
+		return ((double)hitsBytes)/(missesBytes+hitsBytes);
 	}
 }
