@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class LRU extends Cache {
+public class LRU extends Cache implements CacheOperations {
 
 	LinkedList<Request> linkedlist;
 
@@ -26,6 +26,11 @@ public class LRU extends Cache {
 				freeSpace(rqst);
 			put(rqst);
 		}
+	}
+	
+	public void hitForRequest(Request rqst) {
+		linkedlist.remove(rqst);
+		linkedlist.addFirst(rqst);
 	}
 	
 	public Boolean isInCache(Request rqst) {

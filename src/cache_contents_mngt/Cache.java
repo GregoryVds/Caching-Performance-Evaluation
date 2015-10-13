@@ -1,5 +1,7 @@
 package cache_contents_mngt;
 
+import java.util.List;
+
 public class Cache {
 
 	protected int hitsCount;
@@ -11,9 +13,14 @@ public class Cache {
 	protected int capacityFilledInBytes;
 	protected int elementsInCache;
 	protected Boolean capacityExpressedInBytes;
-
-
-	Cache(int capacity, Boolean capacityInBytes, int warmup) {
+	
+	// TO BE OVERIDDEN BY SUBCLASSES
+	public void hitForRequest(Request rqst) {} // Do some accounting after a hit if necessary.
+	public void freeSpace(Request rqst) {} // Free space according to cache type policy.
+	public List<String> getCacheContent(){return null;} // Return the cache content (depends on the data structure used)
+	public Boolean isInCache(Request rqst){return null;} // Check if item is in cache
+	
+	public Cache(int capacity, Boolean capacityInBytes, int warmup) {
 		hitsCount 	= 0;
 		hitsBytes 	= 0;
 		missesCount = 0;
@@ -24,9 +31,20 @@ public class Cache {
 		this.warmup	 		 = warmup;
 		this.capacityExpressedInBytes = capacityInBytes;
 	}
-
+	
 	public void get(String url, int size) {
 		warmup--;
+		Request rqst = new Request(url,size);
+		if (isInCache(rqst)) {
+			newHit(rqst.size);
+			hitForRequest(rqst);
+		}
+		else { 
+			newMiss(rqst.size);
+			if (!fitsInCache(rqst))
+				freeSpace(rqst);
+			put(rqst);
+		}
 	}
 
 	public int getsCount() {
