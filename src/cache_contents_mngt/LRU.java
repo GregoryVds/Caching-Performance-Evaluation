@@ -26,15 +26,12 @@ public class LRU extends Cache {
 	}
 	
 	public void getTache1(Request rqst) {
-		System.out.println("Get");
 		if (isInCache(rqst)) {
-			System.out.println("Hit");
 			newHit(rqst.getSize());
 			linkedlist.remove(rqst);
 			linkedlist.addFirst(rqst);
 		}
 		else { 
-			System.out.println("Miss");
 			newMiss(rqst.getSize());
 			if (linkedlist.size() < this.capacity)
 				linkedlist.removeLast();
@@ -45,7 +42,7 @@ public class LRU extends Cache {
 	public void getTache2(Request rsqt) {
 		
 	}
-
+	
 	public List<String> getCacheContent() {
 		ArrayList<String> stringCache = new ArrayList<String>();
 		while(linkedlist.size() > 0){

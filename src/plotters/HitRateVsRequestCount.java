@@ -34,10 +34,8 @@ public class HitRateVsRequestCount {
 			int size = Integer.parseInt(request.split(" ")[1]);
 			requestsCount++;
 			LRUCache.get(url, size);
-			System.out.println("Hit rate:"+LRUCache.getHitRate());
 			serie.add(requestsCount, LRUCache.getHitRate());
 		}
-
 		stdin.close();
 		
 		final XYSeriesCollection dataset = new XYSeriesCollection();
