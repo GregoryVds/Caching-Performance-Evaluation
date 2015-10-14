@@ -2,82 +2,55 @@ package cache_contents_mngt;
 
 import java.util.List;
 
-public class Cache {
+public abstract class Cache {
 
-	protected int hitsCount;
-	protected int hitsBytes;
-	protected int missesCount;
-	protected int missesBytes;
-	protected int capacity;
-	protected int warmup;
-	protected int capacityFilledInBytes;
-	protected int elementsInCache;
-	protected Boolean capacityExpressedInBytes;
+	private int hitsCount;
+	private int hitsBytes;
+	private int missesCount;
+	private int missesBytes;
+	private int capacity;
+	private int warmup;
+	private int capacityFilledInBytes;
+	private int elementsInCache;
+	
+	protected Boolean capaIsInBytes;
 	
 	// TO BE OVERIDDEN BY SUBCLASSES
-	public void hitForRequest(Request rqst) {} // Do some accounting after a hit if necessary.
-	public void freeSpace(Request rqst) {} // Free space according to cache type policy.
-	public List<String> getCacheContent(){return null;} // Return the cache content (depends on the data structure used)
-	public Boolean isInCache(Request rqst){return null;} // Check if item is in cache
+	public abstract List<String> getCacheContent(); // Return the cache content (depends on the data structure used)
+	protected abstract void newHitForRequest(Request rqst); // Do some accounting after a hit if necessary.
+	protected abstract Boolean isRequestInCache(Request rqst); // Check if item is in cache
+	protected abstract void put(Request rqst);
+	protected abstract void freeSpaceForRequest(Request rqst); // Free space according to cache type policy.
 	
+	// PUBLIC INTERFACE
 	public Cache(int capacity, Boolean capacityInBytes, int warmup) {
 		hitsCount 	= 0;
 		hitsBytes 	= 0;
 		missesCount = 0;
 		missesBytes = 0;
-		capacityFilledInBytes = 0;
-		elementsInCache = 0;
+		capacityFilledInBytes= 0;
+		elementsInCache 	 = 0;
 		this.capacity 		 = capacity;
 		this.warmup	 		 = warmup;
-		this.capacityExpressedInBytes = capacityInBytes;
+		this.capaIsInBytes   = capacityInBytes;
 	}
 	
 	public void get(String url, int size) {
 		warmup--;
 		Request rqst = new Request(url,size);
-		if (isInCache(rqst)) {
-			newHit(rqst.size);
-			hitForRequest(rqst);
+		if (isRequestInCache(rqst)) {
+			accountNewHit(rqst.size);
+			newHitForRequest(rqst);
 		}
 		else { 
-			newMiss(rqst.size);
-			if (!fitsInCache(rqst))
-				freeSpace(rqst);
+			accountNewMiss(rqst.size);
+			if (!requestFitsInCache(rqst))
+				freeSpaceForRequest(rqst);
 			put(rqst);
+			accountRequestInsertion(rqst);
 		}
 	}
 
-	public int getsCount() {
-		return hitsCount+missesCount;
-	}
-	
-	public void newHit(int bytes) {
-		hitsCount++;
-		hitsBytes+=bytes;
-	}
-
-	public void newMiss(int bytes) {
-		missesCount++;
-		missesBytes+=bytes;
-	}
-	
-	public void put(Request rqst) {
-		capacityFilledInBytes+=rqst.size;
-		elementsInCache++;
-	}
-	
-	public void remove(Request rqst) {
-		capacityFilledInBytes-=rqst.size;
-		elementsInCache--;
-	}
-	
-	public boolean fitsInCache(Request rqst) {
-		if (capacityExpressedInBytes)
-			return (capacity >= (capacityFilledInBytes + rqst.size)); 
-		else
-			return (elementsInCache < capacity);
-	}
-	
 	public double getHitRate() {
 		if (getsCount()==0)
 			return 0.0d;
@@ -88,5 +61,42 @@ public class Cache {
 		if (getsCount()==0)
 			return 0.0d;
 		return ((double)hitsBytes)/(missesBytes+hitsBytes);
+	}
+	
+	// INTERFACE FOR SUBCLASSES
+	protected void accountNewHit(int bytes) {
+		if (warmup <= 0) {
+			hitsCount++;
+			hitsBytes+=bytes;
+		}
+	}
+
+	protected void accountNewMiss(int bytes) {
+		if (warmup <= 0) {
+			missesCount++;
+			missesBytes+=bytes;
+		}
+	}
+	
+	protected void accountRequestRemoval(Request rqst) {
+		capacityFilledInBytes-=rqst.size;
+		elementsInCache--;
+	}
+	
+	protected void accountRequestInsertion(Request rqst) {
+		capacityFilledInBytes+=rqst.size;
+		elementsInCache++;
+	}
+	
+	protected boolean requestFitsInCache(Request rqst) {
+		if (capaIsInBytes)
+			return ((capacityFilledInBytes+rqst.size) <= capacity); 
+		else
+			return (elementsInCache < capacity);
+	}
+	
+	// PRIVATE METHODS
+	private int getsCount() {
+		return hitsCount+missesCount;
 	}
 }

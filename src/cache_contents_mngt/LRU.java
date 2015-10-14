@@ -4,55 +4,13 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class LRU extends Cache implements CacheOperations {
+public class LRU extends Cache {
 
 	LinkedList<Request> linkedlist;
 
 	public LRU(int capacity, Boolean capacityInBytes, int warmup) {
 		super(capacity, capacityInBytes, warmup);
 		linkedlist = new LinkedList<Request>();
-	}
-
-	public void get(String url, int size) {
-		Request rqst = new Request(url,size);
-		if (isInCache(rqst)) {
-			newHit(rqst.size);
-			linkedlist.remove(rqst);
-			linkedlist.addFirst(rqst);
-		}
-		else { 
-			newMiss(rqst.size);
-			if (!fitsInCache(rqst))
-				freeSpace(rqst);
-			put(rqst);
-		}
-	}
-	
-	public void hitForRequest(Request rqst) {
-		linkedlist.remove(rqst);
-		linkedlist.addFirst(rqst);
-	}
-	
-	public Boolean isInCache(Request rqst) {
-		return linkedlist.contains(rqst);
-	}
-	
-	@Override
-	public void put(Request rqst) {
-		super.put(rqst);
-		linkedlist.addFirst(rqst);
-	}
-	
-	public void freeSpace(Request rqst) {
-		if (capacityExpressedInBytes)
-			super.remove(linkedlist.removeLast());
-		else {
-			int spaceFreed = 0;
-			while (spaceFreed < rqst.size) {
-				spaceFreed+=linkedlist.getLast().size;
-				super.remove(linkedlist.removeLast());
-			}
-		}
 	}
 	
 	public List<String> getCacheContent() {
@@ -62,6 +20,32 @@ public class LRU extends Cache implements CacheOperations {
 			stringCache.add(temp.url);
 		}
 		return stringCache;	
+	}
+	
+	protected void newHitForRequest(Request rqst) {
+		linkedlist.remove(rqst);
+		linkedlist.addFirst(rqst);
+	}
+	
+	protected Boolean isRequestInCache(Request rqst) {
+		return linkedlist.contains(rqst);
+	}
+	
+	protected void freeSpaceForRequest(Request rqst) {
+		if (capaIsInBytes)
+			super.accountRequestRemoval(linkedlist.removeLast());
+		else {
+			int spaceFreed = 0;
+			while (spaceFreed < rqst.size) {
+				spaceFreed+=linkedlist.getLast().size;
+				super.accountRequestRemoval(linkedlist.removeLast());
+			}
+		}
+	}
+	
+	protected void put(Request rqst) {
+		super.accountRequestInsertion(rqst);
+		linkedlist.addFirst(rqst);
 	}
 }
 
