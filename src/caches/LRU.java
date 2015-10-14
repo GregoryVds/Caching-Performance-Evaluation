@@ -1,4 +1,4 @@
-package cache_contents_mngt;
+package caches;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -31,20 +31,11 @@ public class LRU extends Cache {
 		return linkedlist.contains(rqst);
 	}
 	
-	protected void freeSpaceForRequest(Request rqst) {
-		if (capaIsInBytes)
-			super.accountRequestRemoval(linkedlist.removeLast());
-		else {
-			int spaceFreed = 0;
-			while (spaceFreed < rqst.size) {
-				spaceFreed+=linkedlist.getLast().size;
-				super.accountRequestRemoval(linkedlist.removeLast());
-			}
-		}
+	protected Request freeSlotInCache() {
+		return linkedlist.removeLast();
 	}
 	
-	protected void put(Request rqst) {
-		super.accountRequestInsertion(rqst);
+	protected void addToCache(Request rqst) {
 		linkedlist.addFirst(rqst);
 	}
 }

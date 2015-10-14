@@ -9,7 +9,7 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.RefineryUtilities;
 
-import cache_contents_mngt.LRU;
+import caches.LRU;
 
 public class HitRateVsRequestCount {
 	static int CACHE_SIZE = 100;

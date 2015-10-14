@@ -1,4 +1,4 @@
-package cache_contents_mngt;
+package caches;
 
 public class Request {
 	String url;

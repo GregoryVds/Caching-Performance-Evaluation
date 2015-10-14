@@ -1,8 +1,12 @@
-package cache_contents_mngt;
+package tasks;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+
+import caches.LFU;
+import caches.LRU;
+import lib.Lib;
 
 public class Task2 {
 

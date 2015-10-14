@@ -1,9 +1,9 @@
-package cache_contents_mngt;
+package caches;
 
 import java.util.List;
 
 public abstract class Cache {
-
+	// INTERNAL ACCOUNTING
 	private int hitsCount;
 	private int hitsBytes;
 	private int missesCount;
@@ -13,14 +13,20 @@ public abstract class Cache {
 	private int capacityFilledInBytes;
 	private int elementsInCache;
 	
+	// AVAILABLE TO SUBCLASSES
 	protected Boolean capaIsInBytes;
 	
-	// TO BE OVERIDDEN BY SUBCLASSES
-	public abstract List<String> getCacheContent(); // Return the cache content (depends on the data structure used)
-	protected abstract void newHitForRequest(Request rqst); // Do some accounting after a hit if necessary.
-	protected abstract Boolean isRequestInCache(Request rqst); // Check if item is in cache
-	protected abstract void put(Request rqst);
-	protected abstract void freeSpaceForRequest(Request rqst); // Free space according to cache type policy.
+	// TO BE IMPLEMENTED BY SUBCLASSES
+	// Should return the content of the cache.
+	public abstract List<String> getCacheContent();
+	// Hook called after each new hit. Should perform some accounting here.
+	protected abstract void newHitForRequest(Request rqst);
+	// Check if the request is already in cache.
+	protected abstract Boolean isRequestInCache(Request rqst);
+	// Add the request in the cache.
+	protected abstract void addToCache(Request rqst);
+	// Free space in cache in order to store a new request.
+	protected abstract Request freeSlotInCache();
 	
 	// PUBLIC INTERFACE
 	public Cache(int capacity, Boolean capacityInBytes, int warmup) {
@@ -44,9 +50,9 @@ public abstract class Cache {
 		}
 		else { 
 			accountNewMiss(rqst.size);
-			if (!requestFitsInCache(rqst))
-				freeSpaceForRequest(rqst);
-			put(rqst);
+			while (!requestFitsInCache(rqst))
+				accountRequestRemoval(freeSlotInCache());
+			addToCache(rqst);
 			accountRequestInsertion(rqst);
 		}
 	}
@@ -63,39 +69,38 @@ public abstract class Cache {
 		return ((double)hitsBytes)/(missesBytes+hitsBytes);
 	}
 	
-	// INTERFACE FOR SUBCLASSES
-	protected void accountNewHit(int bytes) {
-		if (warmup <= 0) {
-			hitsCount++;
-			hitsBytes+=bytes;
-		}
-	}
-
-	protected void accountNewMiss(int bytes) {
-		if (warmup <= 0) {
-			missesCount++;
-			missesBytes+=bytes;
-		}
-	}
-	
-	protected void accountRequestRemoval(Request rqst) {
-		capacityFilledInBytes-=rqst.size;
-		elementsInCache--;
-	}
-	
-	protected void accountRequestInsertion(Request rqst) {
-		capacityFilledInBytes+=rqst.size;
-		elementsInCache++;
-	}
-	
-	protected boolean requestFitsInCache(Request rqst) {
+	// PRIVATE METHODS
+	private boolean requestFitsInCache(Request rqst) {
 		if (capaIsInBytes)
 			return ((capacityFilledInBytes+rqst.size) <= capacity); 
 		else
 			return (elementsInCache < capacity);
 	}
 	
-	// PRIVATE METHODS
+	private void accountNewHit(int bytes) {
+		if (warmup <= 0) {
+			hitsCount++;
+			hitsBytes+=bytes;
+		}
+	}
+
+	private void accountNewMiss(int bytes) {
+		if (warmup <= 0) {
+			missesCount++;
+			missesBytes+=bytes;
+		}
+	}
+	
+	private void accountRequestInsertion(Request rqst) {
+		capacityFilledInBytes+=rqst.size;
+		elementsInCache++;
+	}
+	
+	private void accountRequestRemoval(Request rqst) {
+		capacityFilledInBytes-=rqst.size;
+		elementsInCache--;
+	}
+	
 	private int getsCount() {
 		return hitsCount+missesCount;
 	}

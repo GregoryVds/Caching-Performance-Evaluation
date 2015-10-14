@@ -1,4 +1,4 @@
-package cache_contents_mngt;
+package caches;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,13 +8,9 @@ public class LFU extends Cache {
 
 	public LFU(int capacity, Boolean capacityInBytes, int warmup) {
 		super(capacity, capacityInBytes, warmup);
-		// Logic Custom
+		// Initialize custom data structures here
 	}
 
-	public void get(String url, int size) {
-		super.get(url, size);
-	}
-	
 	public List<String> getCacheContent() {
 		return new ArrayList<String>(Arrays.asList(
 				"/history/apollo/",
@@ -22,5 +18,20 @@ public class LFU extends Cache {
 				"/shuttle/missions/sts-73/mission-sts-73.html"
 		));
 	}
-
+	
+	protected void newHitForRequest(Request rqst) {
+		// Do some accounting if necessary.
+	}
+	
+	protected Boolean isRequestInCache(Request rqst) {
+		return true;
+	}
+	
+	protected void addToCache(Request rqst) {
+		// To implement
+	}
+	
+	protected Request freeSlotInCache() {
+		return null; // To implement
+	}
 }
