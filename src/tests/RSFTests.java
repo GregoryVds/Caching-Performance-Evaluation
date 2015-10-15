@@ -23,7 +23,7 @@ public class RSFTests {
 	  }
 	  
 	  @Test
-	  public void removalPolicy() {
+	  public void removalPolicyTest() {
 		int CAPACITY 	= 30;
 		int WARMUP 		= 0;
 		RSF cache 		= new RSF(CAPACITY, true, WARMUP);

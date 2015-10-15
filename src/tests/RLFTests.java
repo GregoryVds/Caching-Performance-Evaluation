@@ -23,7 +23,7 @@ public class RLFTests {
 	  }
 	  
 	  @Test
-	  public void removalPolicy() {
+	  public void removalPolicyTest() {
 		int CAPACITY 	= 30;
 		int WARMUP 		= 0;
 		RLF cache 		= new RLF(CAPACITY, true, WARMUP);
