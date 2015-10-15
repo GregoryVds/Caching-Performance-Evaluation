@@ -2,46 +2,38 @@ package caches;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PriorityQueue;
+import edu.stanford.nlp.util.BinaryHeapPriorityQueue;
 
 public class LFU extends Cache {
 
-	PriorityQueue<RequestLFU> priorityQueue;
+	BinaryHeapPriorityQueue<Request> priorityQueue;
 	
 	public LFU(int capacity, Boolean capacityInBytes, int warmup) {
 		super(capacity, capacityInBytes, warmup);
-		// Initialize custom data structures here
-		priorityQueue = new PriorityQueue<RequestLFU>();
+		priorityQueue = new BinaryHeapPriorityQueue<Request>();
 	}
 
 	public List<String> getCacheContent() {
 		ArrayList<String> stringCache = new ArrayList<String>();
-		while(priorityQueue.size() > 0)
-		{
-			Request temp = priorityQueue.poll();
-			stringCache.add(temp.url);
+		for (Request rqst : priorityQueue) {
+			stringCache.add(rqst.url);
 		}
 		return stringCache;	
 	}
 	
 	protected void newHitForRequest(Request rqst) {
-		// HHHAAAAAAAAAA JE N'AI PAS D'IDEE
-		 
+		priorityQueue.changePriority(rqst, priorityQueue.getPriority(rqst)+1);
 	}
 	
 	protected Boolean isRequestInCache(Request rqst) {
-		RequestLFU rqstLFU = new RequestLFU(rqst.url,rqst.size);
-		return priorityQueue.contains(rqstLFU);
+		return priorityQueue.contains(rqst);
 	}
 	
 	protected void addToCache(Request rqst) {
-		RequestLFU rqstLFU = new RequestLFU(rqst.url,rqst.size);
-		priorityQueue.add(rqstLFU);
+		priorityQueue.add(rqst, 0);
 	}
 	
 	protected Request freeSlotInCache() {
-		return priorityQueue.poll();
+		return priorityQueue.removeFirst();
 	}
-
-
 }

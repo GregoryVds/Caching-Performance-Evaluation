@@ -47,18 +47,16 @@ public abstract class Cache {
 			newHitForRequest(rqst);
 		}
 		else {
-			
 			accountNewMiss(rqst.size);
-			if(rqst.size > capacityFilledInBytes) {
-				
-				while (!requestFitsInCache(rqst))
+			if (requestFitsInCache(rqst)) {
+				while (!roomLeftForRequest(rqst))
 					accountRequestRemoval(freeSlotInCache());
 				addToCache(rqst);
 				accountRequestInsertion(rqst);
 			}
 		}
 	}
-
+	
 	public double getHitRate() {
 		if (getsCount()==0)
 			return 0.0d;
@@ -72,11 +70,18 @@ public abstract class Cache {
 	}
 	
 	// PRIVATE METHODS
-	private boolean requestFitsInCache(Request rqst) {
+	private boolean roomLeftForRequest(Request rqst) {
 		if (capaIsInBytes)
 			return ((capacityFilledInBytes+rqst.size) <= capacity); 
 		else
 			return (elementsInCache < capacity);
+	}
+	
+	private boolean requestFitsInCache(Request rqst) {
+		if (capaIsInBytes)
+			return (rqst.size <= capacityFilledInBytes); 
+		else
+			return true;
 	}
 	
 	private void accountNewHit(int bytes) {
