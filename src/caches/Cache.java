@@ -50,10 +50,8 @@ public abstract class Cache {
 		else {
 			accountNewMiss(rqst.size);
 			if (requestFitsInCache(rqst)) {
-				while (!roomLeftForRequest(rqst)) {
+				while (!roomLeftForRequest(rqst))
 					accountRequestRemoval(freeSlotInCache());
-					System.out.println("Removal");
-				}
 				addToCache(rqst);
 				accountRequestInsertion(rqst);
 			}

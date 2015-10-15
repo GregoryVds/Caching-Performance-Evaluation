@@ -30,7 +30,6 @@ public class LFU extends Cache {
 	}
 	
 	protected void addToCache(Request rqst) {
-		System.out.println("Add to cache"+rqst.url);
 		priorityQueue.add(rqst, 0);
 	}
 	
