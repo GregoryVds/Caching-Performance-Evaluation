@@ -39,4 +39,3 @@ public class LRU extends Cache {
 		linkedlist.addFirst(rqst);
 	}
 }
-

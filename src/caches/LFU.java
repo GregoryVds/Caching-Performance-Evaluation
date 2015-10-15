@@ -26,7 +26,7 @@ public class LFU extends Cache {
 	}
 	
 	protected void newHitForRequest(Request rqst) {
-		priorityQueue.changePriority(rqst, priorityQueue.getPriority(rqst)-1); // Higher priority will be droppped first
+		priorityQueue.changePriority(rqst, priorityQueue.getPriority(rqst)-1); // Higher priority will be dropped first
 	}
 	
 	protected void addToCache(Request rqst) {
