@@ -23,7 +23,16 @@ public class LRU extends Cache {
 	}
 	
 	protected Boolean isRequestInCache(Request rqst) {
-		return linkedlist.contains(rqst);
+		int index = linkedlist.indexOf(rqst);
+		if (index == -1) 
+			return false;
+		else {
+			Request cachedVersion = linkedlist.get(index);
+			if (cachedVersion.size == rqst.size) 
+				return true;
+			else
+				return false;
+		}
 	}
 	
 	protected void newHitForRequest(Request rqst) {
@@ -36,6 +45,7 @@ public class LRU extends Cache {
 	}
 	
 	protected void addToCache(Request rqst) {
+		linkedlist.remove(rqst);
 		linkedlist.addFirst(rqst);
 	}
 }

@@ -22,7 +22,11 @@ public class RLF extends Cache {
 	}
 
 	protected Boolean isRequestInCache(Request rqst) {
-		return priorityQueue.contains(rqst);
+		Request cachedVersion = priorityQueue.getObject(rqst);
+		if (cachedVersion != null && cachedVersion.size == rqst.size) 
+			return true;
+		else
+			return false;
 	}
 	
 	protected void newHitForRequest(Request rqst) {
@@ -30,6 +34,7 @@ public class RLF extends Cache {
 	}
 	
 	protected void addToCache(Request rqst) {
+		priorityQueue.remove(rqst);
 		priorityQueue.add(rqst, rqst.size);
 	}
 	

@@ -14,14 +14,13 @@ public class Request {
 		if (this == o) return true;
 		if (!(o instanceof Request)) return false;
 		Request that = (Request)o;
-		return that.url.equals(this.url) && that.size==this.size;
+		return that.url.equals(this.url);
 	}
 	
 	@Override
     public int hashCode() {
         int hash = 1;
         hash = hash * 17 + this.url.hashCode();
-        hash = hash * 31 + this.size;
         return hash;
     }
 }
