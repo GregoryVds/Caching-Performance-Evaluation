@@ -17,10 +17,10 @@ public abstract class Cache {
 	// TO BE IMPLEMENTED BY SUBCLASSES
 	// Should return the content of the cache.
 	public abstract List<String> getCacheContent();
-	// Hook called after each new hit. Should perform some accounting here.
-	protected abstract void newHitForRequest(Request rqst);
 	// Check if the request is already in cache.
 	protected abstract Boolean isRequestInCache(Request rqst);
+	// Hook called after each new hit. Should perform some accounting here.
+	protected abstract void newHitForRequest(Request rqst);
 	// Add the request in the cache.
 	protected abstract void addToCache(Request rqst);
 	// Free space in cache in order to store a new request.
@@ -50,8 +50,10 @@ public abstract class Cache {
 		else {
 			accountNewMiss(rqst.size);
 			if (requestFitsInCache(rqst)) {
-				while (!roomLeftForRequest(rqst))
+				while (!roomLeftForRequest(rqst)) {
 					accountRequestRemoval(freeSlotInCache());
+					System.out.println("Removal");
+				}
 				addToCache(rqst);
 				accountRequestInsertion(rqst);
 			}
@@ -69,6 +71,10 @@ public abstract class Cache {
 		if (getsCount()==0)
 			return 0.0d;
 		return ((double)hitsBytes)/(missesBytes+hitsBytes);
+	}
+	
+	public Boolean isRequestInCache(String url, int size) {
+		return isRequestInCache(new Request(url, size));
 	}
 	
 	// PRIVATE METHODS

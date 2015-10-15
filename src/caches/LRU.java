@@ -22,13 +22,13 @@ public class LRU extends Cache {
 		return stringCache;	
 	}
 	
+	protected Boolean isRequestInCache(Request rqst) {
+		return linkedlist.contains(rqst);
+	}
+	
 	protected void newHitForRequest(Request rqst) {
 		linkedlist.remove(rqst);
 		linkedlist.addFirst(rqst);
-	}
-	
-	protected Boolean isRequestInCache(Request rqst) {
-		return linkedlist.contains(rqst);
 	}
 	
 	protected Request freeSlotInCache() {

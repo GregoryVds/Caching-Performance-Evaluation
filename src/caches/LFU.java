@@ -21,18 +21,16 @@ public class LFU extends Cache {
 		return stringCache;	
 	}
 	
-	protected void newHitForRequest(Request rqst) {
-		priorityQueue.changePriority(rqst, priorityQueue.getPriority(rqst)+1);
-	}
-	
 	protected Boolean isRequestInCache(Request rqst) {
-		System.out.println("Is in cache?");
-		System.out.println(priorityQueue.contains(rqst));
 		return priorityQueue.contains(rqst);
 	}
 	
+	protected void newHitForRequest(Request rqst) {
+		priorityQueue.changePriority(rqst, priorityQueue.getPriority(rqst)-1); // Higher priority will be droppped first
+	}
+	
 	protected void addToCache(Request rqst) {
-		System.out.println("Added");
+		System.out.println("Add to cache"+rqst.url);
 		priorityQueue.add(rqst, 0);
 	}
 	

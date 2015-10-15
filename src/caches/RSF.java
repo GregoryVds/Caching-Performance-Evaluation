@@ -19,12 +19,12 @@ public class RSF extends Cache {
 		));
 	}
 	
-	protected void newHitForRequest(Request rqst) {
-		// Do some accounting if necessary.
-	}
-	
 	protected Boolean isRequestInCache(Request rqst) {
 		return true;
+	}
+	
+	protected void newHitForRequest(Request rqst) {
+		// Do some accounting if necessary.
 	}
 	
 	protected void addToCache(Request rqst) {
