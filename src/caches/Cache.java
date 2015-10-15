@@ -85,20 +85,20 @@ public abstract class Cache {
 	
 	private boolean requestFitsInCache(Request rqst) {
 		if (capaIsInBytes)
-			return (rqst.size <= capacityFilledInBytes); 
+			return (rqst.size <= capacity); 
 		else
 			return true;
 	}
 	
 	private void accountNewHit(int bytes) {
-		if (warmup <= 0) {
+		if (warmup < 0) {
 			hitsCount++;
 			hitsBytes+=bytes;
 		}
 	}
 
 	private void accountNewMiss(int bytes) {
-		if (warmup <= 0) {
+		if (warmup < 0) {
 			missesCount++;
 			missesBytes+=bytes;
 		}

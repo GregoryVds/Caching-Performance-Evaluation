@@ -10,10 +10,10 @@ public class Request {
 	}
 
 	@Override
-	public boolean equals(Object O) {
-		if (this == O) return true;
-		if (!(O instanceof Request)) return false;
-		Request that = (Request)O;
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Request)) return false;
+		Request that = (Request)o;
 		return that.url.equals(this.url) && that.size==this.size;
 	}
 	
