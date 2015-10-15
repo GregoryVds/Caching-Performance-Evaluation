@@ -46,12 +46,16 @@ public abstract class Cache {
 			accountNewHit(rqst.size);
 			newHitForRequest(rqst);
 		}
-		else { 
+		else {
+			
 			accountNewMiss(rqst.size);
-			while (!requestFitsInCache(rqst))
-				accountRequestRemoval(freeSlotInCache());
-			addToCache(rqst);
-			accountRequestInsertion(rqst);
+			if(rqst.size > capacityFilledInBytes) {
+				
+				while (!requestFitsInCache(rqst))
+					accountRequestRemoval(freeSlotInCache());
+				addToCache(rqst);
+				accountRequestInsertion(rqst);
+			}
 		}
 	}
 
