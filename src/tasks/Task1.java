@@ -4,8 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import caches.LFU;
-import caches.LRU;
+import caches.*;
 import lib.Lib;
 
 public class Task1 {

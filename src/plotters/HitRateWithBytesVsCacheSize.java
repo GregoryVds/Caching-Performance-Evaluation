@@ -8,10 +8,7 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import caches.LFU;
-import caches.LRU;
-import caches.RLF;
-import caches.RSF;
+import caches.*;
 
 public class HitRateWithBytesVsCacheSize {
 	static String PLOT_TITLE 	= "(Byte) Hit Rate vs Cache Size";

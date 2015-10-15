@@ -8,7 +8,7 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import caches.LRU;
+import caches.*;
 
 public class HitRateVsRequestCount {
 	static String PLOT_TITLE 	= "Hit Rate vs Requests Count";
