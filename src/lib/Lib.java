@@ -25,6 +25,6 @@ public class Lib {
 	}
 	
 	public static void print(String text, double pc) {
-		System.out.printf("%s %.1f%c\n", text, pc, '%');
+		System.out.printf("%s %.1f%c\n", text, pc*100, '%');
 	}
 }

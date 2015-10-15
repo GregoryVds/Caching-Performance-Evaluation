@@ -1,8 +1,9 @@
 package tasks;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+// import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import caches.*;
 import lib.Lib;
@@ -13,11 +14,11 @@ public class Task1 {
 		int warmupSize 		 = Integer.parseInt(args[0]);
 		int cacheSizeInLines = Integer.parseInt(args[1]);
 
-		LRU LRUCache = new LRU(warmupSize, false, cacheSizeInLines);
-		LFU LFUCache = new LFU(warmupSize, false, cacheSizeInLines);
+		LRU LRUCache = new LRU(cacheSizeInLines, false, warmupSize);
+		LFU LFUCache = new LFU(cacheSizeInLines, false, warmupSize);
 		
-		BufferedReader stdin = new BufferedReader(new FileReader("/Users/Greg/Desktop/trace_tiny.txt"));
-		// BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+		// BufferedReader stdin = new BufferedReader(new FileReader("/Users/Greg/Desktop/trace_tiny.txt"));
+		BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
 		
 		String request;
 		while((request = stdin.readLine()) != null) {
