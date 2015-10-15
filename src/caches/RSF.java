@@ -21,24 +21,23 @@ public class RSF extends Cache {
 		return stringCache;	
 	}
 
-	protected Boolean isRequestInCache(Request rqst) {
-		Request cachedVersion = priorityQueue.getObject(rqst);
-		if (cachedVersion != null && cachedVersion.size == rqst.size) 
-			return true;
-		else
-			return false;
+	protected Request cachedRequest(Request rqst) {
+		return priorityQueue.getObject(rqst);
 	}
 	
 	protected void newHitForRequest(Request rqst) {
 		// Do some accounting if necessary.
 	}
 	
-	protected void addToCache(Request rqst) {
-		priorityQueue.remove(rqst);
+	protected void addToCache(Request rqst) {		
 		priorityQueue.add(rqst, -rqst.size);
 	}
 	
 	protected Request freeSlotInCache() {
 		return priorityQueue.removeFirst();
+	}
+	
+	protected void flushFromCache(Request rqst) {
+		priorityQueue.remove(rqst);
 	}
 }

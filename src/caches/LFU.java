@@ -21,12 +21,8 @@ public class LFU extends Cache {
 		return stringCache;	
 	}
 	
-	protected Boolean isRequestInCache(Request rqst) {
-		Request cachedVersion = priorityQueue.getObject(rqst);
-		if (cachedVersion != null && cachedVersion.size == rqst.size) 
-			return true;
-		else
-			return false;
+	protected Request cachedRequest(Request rqst) {
+		return priorityQueue.getObject(rqst);
 	}
 	
 	protected void newHitForRequest(Request rqst) {
@@ -40,5 +36,9 @@ public class LFU extends Cache {
 	
 	protected Request freeSlotInCache() {
 		return priorityQueue.removeFirst();
+	}
+	
+	protected void flushFromCache(Request rqst) {
+		priorityQueue.remove(rqst);
 	}
 }

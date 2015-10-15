@@ -63,4 +63,18 @@ public class LFUTests {
 	    assertTrue(cache.isRequestInCache("e", 1));
 	    assertFalse(cache.isRequestInCache("a", 1)); 
 	}
+	
+	@Test
+	public void removalOfChangingItems() {
+		int CAPACITY 	= 3;
+		int WARMUP 		= 0;
+	    LFU cache 		= new LFU(CAPACITY, false, WARMUP);
+	    
+	    cache.get("a", 1); // (a1)
+	    cache.get("b", 1); // (a3 b1)
+	    cache.get("b", 2); // (a3 b2)
+	    assertTrue(cache.isRequestInCache("a", 1));
+	    assertTrue(cache.isRequestInCache("b", 2));
+	    assertFalse(cache.isRequestInCache("b", 1));
+	}
 }

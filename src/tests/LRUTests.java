@@ -55,4 +55,19 @@ public class LRUTests {
 	    assertTrue(cache.isRequestInCache("c", 1));
 	    assertFalse(cache.isRequestInCache("b", 1)); 
 	  }
+	  
+		@Test
+		public void removalOfChangingItems() {
+			int CAPACITY 	= 3;
+			int WARMUP 		= 0;
+		    LRU cache 		= new LRU(CAPACITY, false, WARMUP);
+		    
+		    cache.get("a", 1); 
+		    cache.get("b", 1); 
+		    cache.get("b", 2); 
+
+		    assertTrue(cache.isRequestInCache("a", 1));
+		    assertTrue(cache.isRequestInCache("b", 2));
+		    assertFalse(cache.isRequestInCache("b", 1));
+		}
 }
