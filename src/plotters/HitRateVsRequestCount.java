@@ -12,7 +12,7 @@ import org.jfree.ui.RefineryUtilities;
 import caches.LRU;
 
 public class HitRateVsRequestCount {
-	static int CACHE_SIZE = 100;
+	static int CACHE_SIZE = 30;
 	static String FILE_PATH = "/Users/Greg/Desktop/trace_tiny.txt";
 			
 	public static void main(String[] args) throws NumberFormatException, IOException {

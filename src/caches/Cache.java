@@ -12,9 +12,7 @@ public abstract class Cache {
 	private int warmup;
 	private int capacityFilledInBytes;
 	private int elementsInCache;
-	
-	// AVAILABLE TO SUBCLASSES
-	protected Boolean capaIsInBytes;
+	private Boolean capaIsInBytes;
 	
 	// TO BE IMPLEMENTED BY SUBCLASSES
 	// Should return the content of the cache.
