@@ -7,22 +7,22 @@ import java.io.IOException;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import org.jfree.ui.RefineryUtilities;
 
 import caches.LRU;
 
 public class HitRateVsRequestCount {
-	static int CACHE_SIZE = 30;
-	static String FILE_PATH = "/Users/Greg/Desktop/trace_tiny.txt";
-			
+	static String PLOT_TITLE 	= "Hit Rate vs Requests Count";
+	static String X_AXIS_LABEL 	= "Requests count";
+	static String Y_AXIS_LABEL 	= "Hit Rate";
+				
 	public static void main(String[] args) throws NumberFormatException, IOException {
-		XYPlot chart = new XYPlot("Hit rate vs Requests Count", "Hit rate vs Requests Count", "Requests count", "Hit rate", createDataset());
-		chart.pack();
-		RefineryUtilities.centerFrameOnScreen(chart);
-		chart.setVisible(true);
+		new Plot(PLOT_TITLE, X_AXIS_LABEL, Y_AXIS_LABEL, createDataset());
 	}
 	
-	static XYDataset createDataset() throws NumberFormatException, IOException {	   
+	static XYDataset createDataset() throws NumberFormatException, IOException {
+		final String FILE_PATH 	= "/Users/Greg/Desktop/trace_1K.txt";
+		final int CACHE_SIZE 	= 100;
+
 		final XYSeries serie = new XYSeries("Hit Rate");
 		LRU LRUCache = new LRU(CACHE_SIZE, false, 0);
 

@@ -25,7 +25,7 @@ public class LRUTests {
 	  }
 	  
 	  @Test
-	  public void removalPolicy() {
+	  public void removalPolicyTest() {
 		int CAPACITY 	= 3;
 		int WARMUP 		= 0;
 	    LRU cache 		= new LRU(CAPACITY, false, WARMUP);

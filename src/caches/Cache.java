@@ -4,14 +4,14 @@ import java.util.List;
 
 public abstract class Cache {
 	// INTERNAL ACCOUNTING
-	private int hitsCount;
-	private int hitsBytes;
-	private int missesCount;
-	private int missesBytes;
-	private int capacity;
 	private int warmup;
-	private int capacityFilledInBytes;
-	private int elementsInCache;
+	private long hitsCount;
+	private long hitsBytes;
+	private long missesCount;
+	private long missesBytes;
+	private long capacity;
+	private long capacityFilledInBytes;
+	private long elementsInCache;
 	private Boolean capaIsInBytes;
 	
 	// TO BE IMPLEMENTED BY SUBCLASSES
@@ -27,7 +27,7 @@ public abstract class Cache {
 	protected abstract Request freeSlotInCache();
 	
 	// PUBLIC INTERFACE
-	public Cache(int capacity, Boolean capacityInBytes, int warmup) {
+	public Cache(long capacity, Boolean capacityInBytes, int warmup) {
 		hitsCount 	= 0;
 		hitsBytes 	= 0;
 		missesCount = 0;
@@ -47,7 +47,7 @@ public abstract class Cache {
 			newHitForRequest(rqst);
 			return true;
 		}
-		else {
+		else {			
 			accountNewMiss(rqst.size);
 			if (requestFitsInCache(rqst)) {
 				while (!roomLeftForRequest(rqst))
@@ -87,7 +87,7 @@ public abstract class Cache {
 		if (capaIsInBytes)
 			return (rqst.size <= capacity); 
 		else
-			return true;
+			return (capacity > 0);
 	}
 	
 	private void accountNewHit(int bytes) {
@@ -114,7 +114,7 @@ public abstract class Cache {
 		elementsInCache--;
 	}
 	
-	private int getsCount() {
+	private long getsCount() {
 		return hitsCount+missesCount;
 	}
 }
