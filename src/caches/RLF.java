@@ -8,7 +8,7 @@ public class RLF extends Cache {
 	
 	BinaryHeapPriorityQueue<Request> priorityQueue;
 	
-	RLF(int capacity, Boolean capacityInBytes, int warmup) {
+	public RLF(int capacity, Boolean capacityInBytes, int warmup) {
 		super(capacity, capacityInBytes, warmup);
 		priorityQueue = new BinaryHeapPriorityQueue<Request>();
 	}

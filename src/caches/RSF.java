@@ -8,7 +8,7 @@ public class RSF extends Cache {
 	
 	BinaryHeapPriorityQueue<Request> priorityQueue;
 	
-	RSF(int capacity, Boolean capacityInBytes, int warmup) {
+	public RSF(int capacity, Boolean capacityInBytes, int warmup) {
 		super(capacity, capacityInBytes, warmup);
 		priorityQueue = new BinaryHeapPriorityQueue<Request>();
 	}
