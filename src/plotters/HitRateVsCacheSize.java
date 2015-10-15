@@ -23,15 +23,14 @@ public class HitRateVsCacheSize {
 	static XYDataset createDataset() throws NumberFormatException, IOException {
 		final String FILE_PATH 		= "/Users/Greg/Desktop/trace_10K.txt";
 		final int MAX_CACHE_SIZE 	= 300;
-		final int WARMUP     		= 2*MAX_CACHE_SIZE;
 		
-		final XYSeries LFU_serie = new XYSeries("LFU");
-		final XYSeries LRU_serie = new XYSeries("LRU");
+		XYSeries LFUSerie = new XYSeries("LFU");
+		XYSeries LRUSerie = new XYSeries("LRU");
 		
-		int cache_size = 0;
-		while (cache_size <= MAX_CACHE_SIZE) {
-			LRU LRUCache = new LRU(cache_size, false, WARMUP);
-			LFU LFUCache = new LFU(cache_size, false, WARMUP);
+		int cacheSize = 0;
+		while (cacheSize <= MAX_CACHE_SIZE) {
+			LRU LRUCache = new LRU(cacheSize, false, 2*cacheSize);
+			LFU LFUCache = new LFU(cacheSize, false, 2*cacheSize);
 			
 			BufferedReader stdin = new BufferedReader(new FileReader(FILE_PATH));
 			String request;
@@ -43,18 +42,18 @@ public class HitRateVsCacheSize {
 			}
 			stdin.close();
 			
-			LFU_serie.add(cache_size, LFUCache.getByteHitRate());
-			LRU_serie.add(cache_size, LRUCache.getByteHitRate());
+			LFUSerie.add(cacheSize, LFUCache.getByteHitRate());
+			LRUSerie.add(cacheSize, LRUCache.getByteHitRate());
 			
-			if (cache_size < 50) 
-				cache_size+=1;
+			if (cacheSize < 50) 
+				cacheSize+=1;
 			else
-				cache_size+=5;
+				cacheSize+=5;
 		}
 
 		final XYSeriesCollection dataset = new XYSeriesCollection();
-		dataset.addSeries(LFU_serie);
-		dataset.addSeries(LRU_serie);
+		dataset.addSeries(LFUSerie);
+		dataset.addSeries(LRUSerie);
 		return dataset;
    }
 }
