@@ -39,12 +39,13 @@ public abstract class Cache {
 		this.capaIsInBytes   = capacityInBytes;
 	}
 	
-	public void get(String url, int size) {
+	public boolean get(String url, int size) {
 		warmup--;
 		Request rqst = new Request(url,size);
 		if (isRequestInCache(rqst)) {
 			accountNewHit(rqst.size);
 			newHitForRequest(rqst);
+			return true;
 		}
 		else {
 			accountNewMiss(rqst.size);
@@ -54,6 +55,7 @@ public abstract class Cache {
 				addToCache(rqst);
 				accountRequestInsertion(rqst);
 			}
+			return false;
 		}
 	}
 	

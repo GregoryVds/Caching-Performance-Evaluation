@@ -26,10 +26,13 @@ public class LFU extends Cache {
 	}
 	
 	protected Boolean isRequestInCache(Request rqst) {
+		System.out.println("Is in cache?");
+		System.out.println(priorityQueue.contains(rqst));
 		return priorityQueue.contains(rqst);
 	}
 	
 	protected void addToCache(Request rqst) {
+		System.out.println("Added");
 		priorityQueue.add(rqst, 0);
 	}
 	

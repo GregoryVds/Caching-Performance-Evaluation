@@ -5,5 +5,7 @@
 	<classpathentry kind="lib" path="src/vendor/jcommon-1.0.23.jar"/>
 	<classpathentry kind="lib" path="src/vendor/jfreechart-1.0.19.jar"/>
 	<classpathentry kind="lib" path="src/vendor/stanford-corenlp-1.3.4.jar"/>
+	<classpathentry kind="lib" path="src/vendor/hamcrest-core-1.3.jar"/>
+	<classpathentry kind="lib" path="src/vendor/junit-4.12.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
