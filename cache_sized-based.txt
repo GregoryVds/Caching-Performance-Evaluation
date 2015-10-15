@@ -1,3 +1,0 @@
-/history/apollo/
-/shuttle/countdown/
-/shuttle/missions/sts-73/mission-sts-73.html
