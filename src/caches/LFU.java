@@ -30,7 +30,6 @@ public class LFU extends Cache {
 	}
 	
 	protected void addToCache(Request rqst) {
-		priorityQueue.remove(rqst);
 		priorityQueue.add(rqst, 0);
 	}
 	

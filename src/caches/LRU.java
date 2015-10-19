@@ -40,7 +40,6 @@ public class LRU extends Cache {
 	}
 	
 	protected void addToCache(Request rqst) {
-		linkedlist.remove(rqst);
 		linkedlist.addFirst(rqst);
 	}
 	

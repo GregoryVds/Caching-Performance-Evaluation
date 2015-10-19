@@ -30,7 +30,6 @@ public class RLF extends Cache {
 	}
 	
 	protected void addToCache(Request rqst) {
-		priorityQueue.remove(rqst);
 		priorityQueue.add(rqst, rqst.size);
 	}
 	
