@@ -1,5 +1,6 @@
 package caches;
 
+// Implement Remove Smallest First cache.
 public class RSF extends PriorityQueueBasedCache {
 
 	public RSF(int capacity, Boolean capacityInBytes, int warmup) {

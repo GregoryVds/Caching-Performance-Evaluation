@@ -1,5 +1,6 @@
 package caches;
 
+// Implement Least Frequently Used cache.
 public class LFU extends PriorityQueueBasedCache {
 	
 	public LFU(int capacity, Boolean capacityInBytes, int warmup) {

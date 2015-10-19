@@ -1,5 +1,6 @@
 package caches;
 
+// Implement Remove Largest First cache.
 public class RLF extends PriorityQueueBasedCache {
 	
 	public RLF(int capacity, Boolean capacityInBytes, int warmup) {

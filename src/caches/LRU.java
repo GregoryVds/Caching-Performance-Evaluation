@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+// Implement Least Recently Used cache.
 public class LRU extends Cache {
 
 	LinkedList<Request> linkedlist;
