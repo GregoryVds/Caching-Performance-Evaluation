@@ -6,7 +6,8 @@ import org.apache.commons.collections4.map.LinkedMap;
 
 // Implement Least Recently Used cache.
 public class LRU extends Cache {
-
+	// LinkedMap is a map implementation that maintains the order of the entries
+	// The order is maintained by original insertion.
 	LinkedMap<String, Request> linkedMap;
 	
 	public LRU(int capacity, Boolean capacityInBytes, int warmup) {
@@ -30,10 +31,12 @@ public class LRU extends Cache {
 		linkedMap.put(rqst.url, rqst);
 	}
 	
+	// The first index in the LinkedMap is always the entry that was added first among all entries.
 	protected Request freeSlotInCache() {
 		return linkedMap.remove(0);
 	}
 	
+	// Last entry added to LinkedMap at always at the tail and take the last index.
 	protected void addToCache(Request rqst) {
 		linkedMap.put(rqst.url, rqst);
 	}
