@@ -23,7 +23,7 @@ public class HitRateWithBytesVsCacheSize {
 		final String FILE_PATH 		= "/Users/Greg/Desktop/trace_100K.txt";
 		final int MIN_CACHE_SIZE 	= 10*000; // 10 KB (10^3)
 		final int MAX_CACHE_SIZE 	= 32*1000*1000; // 32 MB (10^6)
-		final int WARMUP 			= 1280;
+		final int WARMUP 			= 12800;
 			
 		XYSeries LFUSerie = new XYSeries("LFU Hit Rate");
 		XYSeries LRUSerie = new XYSeries("LRU Hit Rate");

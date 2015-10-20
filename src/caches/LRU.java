@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.collections4.map.LinkedMap;
 
-
-
 // Implement Least Recently Used cache.
 public class LRU extends Cache {
 
@@ -41,6 +39,6 @@ public class LRU extends Cache {
 	}
 	
 	protected void flushFromCache(Request rqst) {
-		linkedMap.remove(rqst);
+		linkedMap.remove(rqst.url);
 	}
 }
