@@ -20,10 +20,10 @@ public class HitRateWithBytesVsCacheSize {
 	}
 	
 	static XYDataset createDataset() throws NumberFormatException, IOException {
-		final String FILE_PATH 		= "/Users/Greg/Desktop/trace_10K.txt";
-		final int MIN_CACHE_SIZE 	= 10000; // 10 KB (10^3)
-		final int MAX_CACHE_SIZE 	= 10000000; // 10 MB (10^6)
-		final int WARMUP 			= 300;
+		final String FILE_PATH 		= "/Users/Greg/Desktop/trace_100K.txt";
+		final int MIN_CACHE_SIZE 	= 10*000; // 10 KB (10^3)
+		final int MAX_CACHE_SIZE 	= 32*1000*1000; // 32 MB (10^6)
+		final int WARMUP 			= 1280;
 			
 		XYSeries LFUSerie = new XYSeries("LFU Hit Rate");
 		XYSeries LRUSerie = new XYSeries("LRU Hit Rate");
@@ -37,6 +37,7 @@ public class HitRateWithBytesVsCacheSize {
 		
 		int cacheSize = MIN_CACHE_SIZE;
 		while (cacheSize <= MAX_CACHE_SIZE) {
+			System.out.printf("Cache Size: %d\n", cacheSize);
 			LRU LRUCache = new LRU(cacheSize, true, WARMUP);
 			LFU LFUCache = new LFU(cacheSize, true, WARMUP);
 			RLF RLFCache = new RLF(cacheSize, true, WARMUP);
@@ -65,7 +66,7 @@ public class HitRateWithBytesVsCacheSize {
 			RLFSerieBytes.add(cacheSize, RLFCache.getByteHitRate());
 			RSFSerieBytes.add(cacheSize, RSFCache.getByteHitRate());
 			
-			cacheSize+=10000;
+			cacheSize+=50000;
 		}
 
 		final XYSeriesCollection dataset = new XYSeriesCollection();

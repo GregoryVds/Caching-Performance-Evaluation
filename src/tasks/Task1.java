@@ -13,7 +13,7 @@ public class Task1 {
 	public static void main(String[] args) throws IOException {
 		int warmupSize 		 = Integer.parseInt(args[0]);
 		int cacheSizeInLines = Integer.parseInt(args[1]);
-
+	
 		LRU LRUCache = new LRU(cacheSizeInLines, false, warmupSize);
 		LFU LFUCache = new LFU(cacheSizeInLines, false, warmupSize);
 		

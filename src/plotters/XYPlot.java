@@ -14,7 +14,7 @@ public class XYPlot extends ApplicationFrame {
 		super(applicationTitle);
 		JFreeChart lineChart = ChartFactory.createXYLineChart(chartTitle, xAxisLabel, yAxisLabel, dataSet, PlotOrientation.VERTICAL, true, true, false);
 		ChartPanel chartPanel = new ChartPanel(lineChart);
-		chartPanel.setPreferredSize(new java.awt.Dimension(560,400));
+		chartPanel.setPreferredSize(new java.awt.Dimension(750,500));
 		setContentPane(chartPanel);
 	}
 }

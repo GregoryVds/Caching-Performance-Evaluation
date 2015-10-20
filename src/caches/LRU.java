@@ -1,50 +1,46 @@
 package caches;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
+import org.apache.commons.collections4.map.LinkedMap;
+
+
 
 // Implement Least Recently Used cache.
 public class LRU extends Cache {
 
-	LinkedList<Request> linkedlist;
-
+	LinkedMap<String, Request> linkedMap;
+	
 	public LRU(int capacity, Boolean capacityInBytes, int warmup) {
 		super(capacity, capacityInBytes, warmup);
-		linkedlist = new LinkedList<Request>();
+		linkedMap = new LinkedMap<String, Request>();
 	}
 	
 	public List<String> getCacheContent() {
 		ArrayList<String> stringCache = new ArrayList<String>();
-		while(linkedlist.size() > 0){
-			Request temp = linkedlist.removeLast();
-			stringCache.add(temp.url);
-		}
+		for (String key : linkedMap.keySet())
+			stringCache.add(key);
 		return stringCache;	
 	}
 	
 	protected Request cachedRequest(Request rqst) {
-		int index = linkedlist.indexOf(rqst);
-		if (index == -1)
-			return null;
-		else
-			return linkedlist.get(index);
+		return linkedMap.get(rqst.url);
 	}
 		
 	protected void newHitForRequest(Request rqst) {
-		linkedlist.remove(rqst);
-		linkedlist.addFirst(rqst);
+		linkedMap.remove(rqst.url);
+		linkedMap.put(rqst.url, rqst);
 	}
 	
 	protected Request freeSlotInCache() {
-		return linkedlist.removeLast();
+		return linkedMap.remove(0);
 	}
 	
 	protected void addToCache(Request rqst) {
-		linkedlist.addFirst(rqst);
+		linkedMap.put(rqst.url, rqst);
 	}
 	
 	protected void flushFromCache(Request rqst) {
-		linkedlist.remove(rqst);
+		linkedMap.remove(rqst);
 	}
 }

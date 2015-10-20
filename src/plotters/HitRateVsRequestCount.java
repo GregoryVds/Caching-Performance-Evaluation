@@ -20,12 +20,12 @@ public class HitRateVsRequestCount {
 	}
 	
 	static XYDataset createDataset() throws NumberFormatException, IOException {
-		final String FILE_PATH 	= "/Users/Greg/Desktop/trace_1K.txt";
-		final int CACHE_SIZE 	= 100;
+		final String FILE_PATH 	= "/Users/Greg/Desktop/trace_100K.txt";
+		final int CACHE_SIZE 	= 1280;
 
 		final XYSeries serie = new XYSeries("Hit Rate");
 		LRU LRUCache = new LRU(CACHE_SIZE, false, 0);
-
+		
 		BufferedReader stdin = new BufferedReader(new FileReader(FILE_PATH));
 		String request;
 		int requestsCount = 0;
@@ -40,6 +40,6 @@ public class HitRateVsRequestCount {
 		
 		final XYSeriesCollection dataset = new XYSeriesCollection();
 		dataset.addSeries(serie);
-		return dataset;
+		return dataset;	
    }
 }
